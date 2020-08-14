@@ -1,12 +1,19 @@
 package com.sankalpchauhan.topnews.view.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
@@ -15,6 +22,8 @@ import com.sankalpchauhan.topnews.config.Constants;
 import com.sankalpchauhan.topnews.databinding.ActivityMainBinding;
 import com.sankalpchauhan.topnews.model.APIResponse;
 import com.sankalpchauhan.topnews.model.Article;
+import com.sankalpchauhan.topnews.util.Utility;
+import com.sankalpchauhan.topnews.view.adapter.NewsAdapter;
 import com.sankalpchauhan.topnews.view.fragments.NewsFragment;
 import com.sankalpchauhan.topnews.viewmodel.MainActivityViewModel;
 
@@ -24,16 +33,24 @@ import java.util.Map;
 
 import timber.log.Timber;
 
+import static com.sankalpchauhan.topnews.util.Utility.isOnline;
 import static com.sankalpchauhan.topnews.util.Utility.prepareHashmap;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NewsAdapter.NewsAdapterClickListener {
+    private static final String SOURCE_ID = "ign";
     private List<Article> articleList;
     private ActivityMainBinding binding;
     private Map<String, String> userSelectednewsSources;
     public MainActivityViewModel mainActivityViewModel;
+    private GridLayoutManager gridLayoutManager;
+    private NewsAdapter newsAdapter;
+    int lastFirstVisiblePosition;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState!=null){
+            lastFirstVisiblePosition = savedInstanceState.getInt(Constants.ITEM_POSITION);
+        }
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initViewModel();
@@ -46,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 loadArticles((String)tab.getTag());
-                binding.fragment.setVisibility(View.VISIBLE);
+                binding.newsRv.setVisibility(View.VISIBLE);
+                gridLayoutManager.scrollToPosition(0);
             }
 
             @Override
@@ -57,13 +75,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 loadArticles((String)tab.getTag());
-                binding.fragment.setVisibility(View.VISIBLE);
+                binding.newsRv.setVisibility(View.VISIBLE);
+                gridLayoutManager.scrollToPosition(0);
             }
         });
+        setUpRecyclerView(articleList);
 
         TabLayout.Tab tab = binding.tabLayout.getTabAt(0);
         tab.select();
 
+    }
+
+    private void setUpRecyclerView(List<Article> articleList) {
+        final int columns = getResources().getInteger(R.integer.gallery_columns);
+        //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(binding.getRoot().getContext(), LinearLayoutManager.VERTICAL, false);
+        gridLayoutManager = new GridLayoutManager(binding.getRoot().getContext(), columns, RecyclerView.VERTICAL, false);
+        binding.newsRv.setLayoutManager(gridLayoutManager);
+        binding.newsRv.setHasFixedSize(true);
+        newsAdapter = new NewsAdapter(this);
+        binding.newsRv.setAdapter(newsAdapter);
+        newsAdapter.setNewsData(articleList);
     }
 
     private void loadArticles(String sourceId){
@@ -76,12 +107,37 @@ public class MainActivity extends AppCompatActivity {
                 binding.shimmer.setVisibility(View.INVISIBLE);
                 if(apiResponse!=null) {
                     setArticleList(apiResponse.getArticles());
+                    checkStatus();
                 } else {
                     Toast.makeText(MainActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                    checkStatus();
+                    if(!Utility.isOnline()){
+                        binding.emptyText.setText("No Internet");
+                    }
                 }
-                loadFragment(new NewsFragment());
+                gridLayoutManager.scrollToPosition(lastFirstVisiblePosition);
+                newsAdapter.setNewsData(articleList);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkStatus();
+    }
+
+    private void checkStatus(){
+        if(newsAdapter.getItemCount()==0){
+            binding.emptyText.setVisibility(View.VISIBLE);
+            binding.emptyView.setVisibility(View.VISIBLE);
+            if(!Utility.isOnline()){
+                binding.emptyText.setText("No Internet");
+            }
+        } else {
+            binding.emptyText.setVisibility(View.INVISIBLE);
+            binding.emptyView.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void initViewModel() {
@@ -93,34 +149,53 @@ public class MainActivity extends AppCompatActivity {
         return articleList;
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
     public void setArticleList(List<Article> articleList) {
         this.articleList = articleList;
     }
 
-    public boolean loadFragment(Fragment fragment) {
-        //switching fragment
-        if (fragment != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment, fragment)
-                    .commit();
-            return true;
-        }
-        return false;
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        final int columns = getResources().getInteger(R.integer.gallery_columns);
+        gridLayoutManager.setSpanCount(columns);
+//        toolbar.animate().translationY(-toolbar.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override
     protected void onSaveInstanceState(final Bundle outState) {
-        super.onSaveInstanceState(outState);
         outState.putInt(Constants.TAB_POSITION,binding.tabLayout.getSelectedTabPosition());
         outState.putSerializable(Constants.ARTICLE_LIST, (Serializable) articleList);
+        outState.putInt(Constants.ITEM_POSITION ,gridLayoutManager.findFirstCompletelyVisibleItemPosition());
+        Timber.e("Test 1 "+ gridLayoutManager.findFirstCompletelyVisibleItemPosition());
+        super.onSaveInstanceState(outState);
     }
+
+
 
     @Override
     protected void onRestoreInstanceState(final Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         binding.tabLayout.selectTab(binding.tabLayout.getTabAt(savedInstanceState.getInt(Constants.TAB_POSITION)));
         binding.tabLayout.getTabAt(savedInstanceState.getInt(Constants.TAB_POSITION)).select();
+        lastFirstVisiblePosition = savedInstanceState.getInt(Constants.ITEM_POSITION);
+        Timber.e("Test 2 "+ lastFirstVisiblePosition);
+
+    }
+
+    @Override
+    public void onNewsClick(Article article, int position) {
+        if(!isOnline()){
+            Utility.setSnackBar(binding.getRoot(), "No Internet Connection");
+        } else {
+            Intent i = new Intent(this, NewsDetailActivity.class);
+            i.putExtra(Constants.NEWS_URL, article.getUrl());
+            startActivity(i);
+        }
     }
 
 
