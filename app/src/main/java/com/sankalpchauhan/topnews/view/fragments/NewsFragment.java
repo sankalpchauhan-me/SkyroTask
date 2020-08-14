@@ -1,5 +1,6 @@
 package com.sankalpchauhan.topnews.view.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,13 +9,18 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.sankalpchauhan.topnews.R;
+import com.sankalpchauhan.topnews.config.Constants;
 import com.sankalpchauhan.topnews.databinding.NewsFragmentBinding;
 import com.sankalpchauhan.topnews.model.Article;
 import com.sankalpchauhan.topnews.util.Utility;
 import com.sankalpchauhan.topnews.view.adapter.NewsAdapter;
 import com.sankalpchauhan.topnews.view.ui.MainActivity;
+import com.sankalpchauhan.topnews.view.ui.NewsDetailActivity;
 
 import java.util.List;
 
@@ -47,8 +53,10 @@ public class NewsFragment extends Fragment implements NewsAdapter.NewsAdapterCli
     }
 
     private void setUpRecyclerView(List<Article> articleList) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(binding.getRoot().getContext(), LinearLayoutManager.VERTICAL, false);
-        binding.newsRv.setLayoutManager(linearLayoutManager);
+        final int columns = getResources().getInteger(R.integer.gallery_columns);
+        //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(binding.getRoot().getContext(), LinearLayoutManager.VERTICAL, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(binding.getRoot().getContext(), columns, RecyclerView.VERTICAL, false);
+        binding.newsRv.setLayoutManager(gridLayoutManager);
         binding.newsRv.setHasFixedSize(true);
         newsAdapter = new NewsAdapter(this);
         binding.newsRv.setAdapter(newsAdapter);
@@ -61,6 +69,8 @@ public class NewsFragment extends Fragment implements NewsAdapter.NewsAdapterCli
 
     @Override
     public void onNewsClick(Article article, int position) {
-
+        Intent i = new Intent(getActivity(), NewsDetailActivity.class);
+        i.putExtra(Constants.NEWS_URL,article.getUrl());
+        startActivity(i);
     }
 }

@@ -7,7 +7,7 @@
     android:elevation="4dp"
     app:cardBackgroundColor="@color/background"
     app:cardCornerRadius="4dp"
-    android:layout_margin="4dp">
+    android:layout_margin="6dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,6 +19,13 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
+            />
+        <ProgressBar
+            android:id="@+id/progress_horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:indeterminate="true"
             />
         <TextView
             android:id="@+id/title"

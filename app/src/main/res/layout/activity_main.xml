@@ -10,7 +10,7 @@
         android:id="@+id/tabLayout"
         android:elevation="4dp"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,6 +32,9 @@
         />
 
     <com.facebook.shimmer.ShimmerFrameLayout
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginTop="?actionBarSize"
         android:id="@+id/shimmer"
         app:shimmer_auto_start="true"
@@ -52,6 +55,9 @@
 
 
     <FrameLayout
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:visibility="invisible"
         android:layout_marginTop="?actionBarSize"
         android:id="@+id/fragment"
