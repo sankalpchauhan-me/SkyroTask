@@ -7,10 +7,6 @@ public class Utility {
 
     public static Map<String, String> prepareHashmap(){
         Map<String, String> hashMap = new HashMap<>();
-        //India
-        hashMap.put("The Hindu", "the-hindu");
-        hashMap.put("The Times of India", "the-times-of-india");
-        hashMap.put("Google News (India)", "google-news-in");
         //International
         hashMap.put("ABC News", "abc-news");
         hashMap.put("BBC News", "bbc-news");
@@ -21,6 +17,10 @@ public class Utility {
         hashMap.put("National Geographic", "national-geographic");
         hashMap.put("New Scientist", "new-scientist");
         hashMap.put("Next Big Future", "next-big-future");
+        //India
+        hashMap.put("The Hindu", "the-hindu");
+        hashMap.put("The Times of India", "the-times-of-india");
+        hashMap.put("Google News (India)", "google-news-in");
 
         return hashMap;
 

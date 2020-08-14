@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sankalpchauhan.topnews.databinding.NewsItemBinding;
-import com.sankalpchauhan.topnews.model.News;
+import com.sankalpchauhan.topnews.model.Article;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     final NewsAdapterClickListener newsAdapterClickListener;
     private NewsItemBinding binding;
-    List<News> newsList = new ArrayList<>();
+    List<Article> articleList = new ArrayList<>();
 
     public NewsAdapter(NewsAdapterClickListener newsAdapterClickListener){
         this.newsAdapterClickListener = newsAdapterClickListener;
@@ -33,25 +33,25 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull NewsAdapter.NewsHolder holder, int position) {
-        News news = newsList.get(position);
+        Article article = articleList.get(position);
 
     }
 
     @Override
     public int getItemCount() {
-        if(newsList==null) {
+        if(articleList ==null) {
             return 0;
         }
-        return newsList.size();
+        return articleList.size();
     }
 
-    public void setNewsData(List<News> newsData){
-        newsList = newsData;
+    public void setNewsData(List<Article> articleData){
+        articleList = articleData;
         notifyDataSetChanged();
     }
 
     public interface NewsAdapterClickListener{
-        void onNewsClick(News news, int position);
+        void onNewsClick(Article article, int position);
     }
 
     public class NewsHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -72,7 +72,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
         @Override
         public void onClick(View view) {
-            newsAdapterClickListener.onNewsClick(newsList.get(getAdapterPosition()), getAdapterPosition());
+            newsAdapterClickListener.onNewsClick(articleList.get(getAdapterPosition()), getAdapterPosition());
         }
     }
 }

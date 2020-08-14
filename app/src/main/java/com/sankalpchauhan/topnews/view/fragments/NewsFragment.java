@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.sankalpchauhan.topnews.databinding.NewsFragmentBinding;
-import com.sankalpchauhan.topnews.model.News;
+import com.sankalpchauhan.topnews.model.Article;
 import com.sankalpchauhan.topnews.view.adapter.NewsAdapter;
 import com.sankalpchauhan.topnews.view.ui.MainActivity;
 
@@ -41,21 +41,21 @@ public class NewsFragment extends Fragment implements NewsAdapter.NewsAdapterCli
         }
     }
 
-    private void setUpRecyclerView(List<News> newsList) {
+    private void setUpRecyclerView(List<Article> articleList) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(binding.getRoot().getContext(), LinearLayoutManager.VERTICAL, false);
         binding.newsRv.setLayoutManager(linearLayoutManager);
         binding.newsRv.setHasFixedSize(true);
         newsAdapter = new NewsAdapter(this);
         binding.newsRv.setAdapter(newsAdapter);
-        newsAdapter.setNewsData(newsList);
+        newsAdapter.setNewsData(articleList);
     }
 
-    public List<News> setInvoicesData(){
-        return ((MainActivity) getActivity()).getNewsList();
+    public List<Article> setInvoicesData(){
+        return ((MainActivity) getActivity()).getArticleList();
     }
 
     @Override
-    public void onNewsClick(News news, int position) {
+    public void onNewsClick(Article article, int position) {
 
     }
 }

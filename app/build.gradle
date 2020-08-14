@@ -25,9 +25,10 @@ android {
 
     buildTypes {
         debug{
-
+            resValue("string", "NEWS_API_KEY", NEWS_API_KEY_DEBUG)
         }
         release {
+            resValue("string", "NEWS_API_KEY", NEWS_API_KEY)
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
