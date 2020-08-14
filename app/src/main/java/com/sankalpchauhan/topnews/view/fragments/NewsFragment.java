@@ -24,6 +24,8 @@ import com.sankalpchauhan.topnews.view.ui.NewsDetailActivity;
 
 import java.util.List;
 
+import static com.sankalpchauhan.topnews.util.Utility.isOnline;
+
 public class NewsFragment extends Fragment implements NewsAdapter.NewsAdapterClickListener {
     private NewsFragmentBinding binding;
     private NewsAdapter newsAdapter;
@@ -69,8 +71,12 @@ public class NewsFragment extends Fragment implements NewsAdapter.NewsAdapterCli
 
     @Override
     public void onNewsClick(Article article, int position) {
-        Intent i = new Intent(getActivity(), NewsDetailActivity.class);
-        i.putExtra(Constants.NEWS_URL,article.getUrl());
-        startActivity(i);
+        if(!isOnline()){
+            Utility.setSnackBar(binding.getRoot(), "No Internet Connection");
+        } else {
+            Intent i = new Intent(getActivity(), NewsDetailActivity.class);
+            i.putExtra(Constants.NEWS_URL, article.getUrl());
+            startActivity(i);
+        }
     }
 }
