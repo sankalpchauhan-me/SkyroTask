@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.sankalpchauhan.topnews.databinding.NewsFragmentBinding;
 import com.sankalpchauhan.topnews.model.Article;
+import com.sankalpchauhan.topnews.util.Utility;
 import com.sankalpchauhan.topnews.view.adapter.NewsAdapter;
 import com.sankalpchauhan.topnews.view.ui.MainActivity;
 
@@ -26,6 +27,7 @@ public class NewsFragment extends Fragment implements NewsAdapter.NewsAdapterCli
         binding = NewsFragmentBinding.inflate(inflater, container, false);
         View v = binding.getRoot();
         setUpRecyclerView(setInvoicesData());
+        setRetainInstance(true);
         return v;
     }
 
@@ -35,6 +37,9 @@ public class NewsFragment extends Fragment implements NewsAdapter.NewsAdapterCli
         if(newsAdapter.getItemCount()==0){
             binding.emptyText.setVisibility(View.VISIBLE);
             binding.emptyView.setVisibility(View.VISIBLE);
+            if(!Utility.isOnline()){
+                binding.emptyText.setText("No Internet");
+            }
         } else {
             binding.emptyText.setVisibility(View.INVISIBLE);
             binding.emptyView.setVisibility(View.INVISIBLE);

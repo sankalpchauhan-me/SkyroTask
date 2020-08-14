@@ -16,13 +16,10 @@ public class RetrofitService {
 
 
     public static <S> S createService(Class<S> serviceClass) {
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder httpClient = CachingPolicy.okClientBuilder();
         AuthenticationInterceptor interceptor = new AuthenticationInterceptor();
         if (!httpClient.interceptors().contains(interceptor)) {
             httpClient.addInterceptor(interceptor);
-            httpClient.addInterceptor(loggingInterceptor);
             builder.client(httpClient.build());
             retrofit = builder.build();
         }

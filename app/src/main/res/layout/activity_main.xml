@@ -21,6 +21,16 @@
         app:tabGravity="fill"
         android:padding="12dp"
         app:tabMode="scrollable" />
+    <ProgressBar
+        android:visibility="invisible"
+        android:id="@+id/progress_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:indeterminate="true"
+        />
+
 
     <FrameLayout
         android:layout_marginTop="?actionBarSize"
