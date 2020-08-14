@@ -5,16 +5,15 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class ArticleSource implements Serializable
-{
+public class ArticleSource implements Serializable {
 
+    private final static long serialVersionUID = 3322625510614435026L;
     @SerializedName("id")
     @Expose
     private String id;
     @SerializedName("name")
     @Expose
     private String name;
-    private final static long serialVersionUID = 3322625510614435026L;
 
     public String getId() {
         return id;

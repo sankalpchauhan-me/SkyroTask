@@ -27,10 +27,10 @@ import static com.sankalpchauhan.topnews.util.Utility.toCalendar;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     final NewsAdapterClickListener newsAdapterClickListener;
-    private NewsItemBinding binding;
     List<Article> articleList = new ArrayList<>();
+    private NewsItemBinding binding;
 
-    public NewsAdapter(NewsAdapterClickListener newsAdapterClickListener){
+    public NewsAdapter(NewsAdapterClickListener newsAdapterClickListener) {
         this.newsAdapterClickListener = newsAdapterClickListener;
     }
 
@@ -44,10 +44,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     @Override
     public void onBindViewHolder(@NonNull NewsAdapter.NewsHolder holder, int position) {
         Article article = articleList.get(position);
-        if(article.getTitle()!=null) {
+        if (article.getTitle() != null) {
             holder.title.setText(article.getTitle());
         }
-        if(article.getDescription()!=null) {
+        if (article.getDescription() != null) {
             holder.subTitle.setText(article.getDescription());
         }
         Picasso.get().load(article.getUrlToImage()).error(R.drawable.ic_broken_image_black_24dp).into(holder.thumbnail, new Callback() {
@@ -61,7 +61,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                 holder.progressBar.setVisibility(View.INVISIBLE);
             }
         });
-        if(article.getPublishedAt()!=null) {
+        if (article.getPublishedAt() != null) {
             String dtStart = article.getPublishedAt();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
             try {
@@ -69,7 +69,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                 Calendar cal = toCalendar(date);
                 holder.date.setText(String.format("%d/%d/%d", cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH), cal.get(Calendar.YEAR)));
                 String ampm;
-                if(cal.get(Calendar.AM_PM)==Calendar.AM){
+                if (cal.get(Calendar.AM_PM) == Calendar.AM) {
                     ampm = "AM";
                 } else {
                     ampm = "PM";
@@ -84,22 +84,22 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
     @Override
     public int getItemCount() {
-        if(articleList ==null) {
+        if (articleList == null) {
             return 0;
         }
         return articleList.size();
     }
 
-    public void setNewsData(List<Article> articleData){
+    public void setNewsData(List<Article> articleData) {
         articleList = articleData;
         notifyDataSetChanged();
     }
 
-    public interface NewsAdapterClickListener{
+    public interface NewsAdapterClickListener {
         void onNewsClick(Article article, int position);
     }
 
-    public class NewsHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class NewsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView thumbnail;
         TextView title;
         TextView subTitle;

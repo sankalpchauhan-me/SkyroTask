@@ -9,8 +9,8 @@ import android.preference.PreferenceManager;
 public class DefaultPrefSettings {
     private static final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
     private static DefaultPrefSettings ourInstance = new DefaultPrefSettings();
-    private SharedPreferences defaultPref;
     private final Object object = new Object();
+    private SharedPreferences defaultPref;
 
     public static DefaultPrefSettings getInstance() {
         return ourInstance;

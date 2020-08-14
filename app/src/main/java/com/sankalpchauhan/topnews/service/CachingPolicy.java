@@ -21,7 +21,7 @@ public class CachingPolicy {
     public static final String CACHE_CONTROL = "Cache-Control";
     public static final String PRAGMA = "Pragma";
     public static final String REVALIDATE_STRATEGY = "must-revalidate";
-    public static final Integer MAX_AGE = 50*60;
+    public static final Integer MAX_AGE = 50 * 60;
     public static final Integer MAX_FILE_SIZE = 10 * 1024 * 1024; //10 MB
     public static final Interceptor REWRITE_RESPONSE_INTERCEPTOR = new Interceptor() {
         @Override
@@ -84,7 +84,7 @@ public class CachingPolicy {
             Request request = chain.request();
             response = sendReqeust(chain, request);
             while (response == null && tryCount < Constants.MAX_LIMIT) {
-                Timber.d("intercept"+"Request failed - " + tryCount);
+                Timber.d("intercept" + "Request failed - " + tryCount);
                 tryCount++;
                 try {
                     Thread.sleep(Constants.WAIT_THRESHOLD);

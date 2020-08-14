@@ -17,6 +17,7 @@
         <ImageView
             android:id="@+id/thumbnailImage"
             android:layout_width="match_parent"
+            android:contentDescription="@string/article_image"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
             />
@@ -54,7 +55,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Time"
+                android:text="@string/time"
                 />
             <TextView
                 android:id="@+id/timeTV"
@@ -73,7 +74,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date"
+                android:text="@string/date"
                 />
             <TextView
                 android:id="@+id/dateTV"

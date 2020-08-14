@@ -25,11 +25,12 @@ import timber.log.Timber;
 import static com.sankalpchauhan.topnews.util.Utility.isOnline;
 
 public class NewsDetailActivity extends AppCompatActivity {
-    private ActivityNewsDetailBinding binding;
     String newsUrl;
+    private ActivityNewsDetailBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(getIntent().hasExtra(Constants.NEWS_URL)){
+        if (getIntent().hasExtra(Constants.NEWS_URL)) {
             newsUrl = getIntent().getStringExtra(Constants.NEWS_URL);
         } else {
             this.finish();
@@ -39,7 +40,7 @@ public class NewsDetailActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
 
-        if(getSupportActionBar()!=null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Article");
         }
@@ -59,6 +60,7 @@ public class NewsDetailActivity extends AppCompatActivity {
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 Toast.makeText(activity, description, Toast.LENGTH_SHORT).show();
             }
+
             @TargetApi(android.os.Build.VERSION_CODES.M)
             @Override
             public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError rerr) {
@@ -71,7 +73,7 @@ public class NewsDetailActivity extends AppCompatActivity {
                 binding.progressHorizontal.setVisibility(View.INVISIBLE);
             }
         });
-        if(newsUrl!=null) {
+        if (newsUrl != null) {
             binding.mWebview.loadUrl(newsUrl);
         } else {
             Toast.makeText(this, "Error!!", Toast.LENGTH_SHORT).show();
@@ -82,14 +84,14 @@ public class NewsDetailActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(!isOnline()){
+        if (!isOnline()) {
             Utility.setSnackBar(binding.getRoot(), "No Internet Connection");
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 break;

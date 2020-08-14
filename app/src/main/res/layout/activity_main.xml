@@ -22,6 +22,7 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:visibility="invisible"
+        android:contentDescription="@string/empty_view"
         android:src="@drawable/ic_brightness_2_black_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,7 +37,7 @@
         android:layout_marginTop="10dp"
         android:textSize="20sp"
         android:visibility="invisible"
-        android:text="No News From This Source"
+        android:text="@string/no_news_from_this_source"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emptyView" />

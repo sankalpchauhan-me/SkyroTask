@@ -14,24 +14,24 @@ public class NewsRepository {
     public static NewsRepository newsRepository;
     private NewsAPI newsAPI;
 
-    public NewsRepository(){
+    public NewsRepository() {
         newsAPI = RetrofitService.createService(NewsAPI.class);
     }
 
-    public static NewsRepository getInstance(){
-        if(newsRepository==null){
+    public static NewsRepository getInstance() {
+        if (newsRepository == null) {
             newsRepository = new NewsRepository();
         }
         return newsRepository;
     }
 
-    public MutableLiveData<APIResponse> getTopNewsBySource(String sourceId){
+    public MutableLiveData<APIResponse> getTopNewsBySource(String sourceId) {
         final MutableLiveData<APIResponse> topNewsLiveData = new MutableLiveData<>();
         newsAPI.getTopHeadlinesBySource(sourceId).enqueue(new Callback<APIResponse>() {
             @Override
             public void onResponse(Call<APIResponse> call, Response<APIResponse> response) {
-                if(response.isSuccessful() && response.code()<300 && response.code()>=200){
-                    if(response.body().getStatus().equals("ok")){
+                if (response.isSuccessful() && response.code() < 300 && response.code() >= 200) {
+                    if (response.body().getStatus().equals("ok")) {
                         topNewsLiveData.setValue(response.body());
                     } else {
                         topNewsLiveData.setValue(null);

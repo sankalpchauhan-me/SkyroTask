@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Top News</string>
     <string name="this_is_a_placeholder">This is a placeholder</string>
+    <string name="no_news_from_this_source">No News From This Source</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="no_internet">No Internet</string>
+    <string name="empty_view">Empty View</string>
+    <string name="article_image">Article image</string>
 </resources>

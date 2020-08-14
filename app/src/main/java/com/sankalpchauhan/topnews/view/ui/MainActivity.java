@@ -34,12 +34,13 @@ import static com.sankalpchauhan.topnews.util.Utility.prepareHashmap;
 
 public class MainActivity extends AppCompatActivity implements NewsAdapter.NewsAdapterClickListener {
     private static final String SOURCE_ID = "ign";
+    public MainActivityViewModel mainActivityViewModel;
     private List<Article> articleList;
     private ActivityMainBinding binding;
     private Map<String, String> userSelectednewsSources;
-    public MainActivityViewModel mainActivityViewModel;
     private GridLayoutManager gridLayoutManager;
     private NewsAdapter newsAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,14 +50,14 @@ public class MainActivity extends AppCompatActivity implements NewsAdapter.NewsA
         binding.toolbar.setTitle("Top News");
         initViewModel();
         userSelectednewsSources = prepareHashmap();
-        for(Map.Entry<String, String> entry: userSelectednewsSources.entrySet()){
+        for (Map.Entry<String, String> entry : userSelectednewsSources.entrySet()) {
             binding.tabLayout.addTab(binding.tabLayout.newTab().setTag(entry.getValue()).setText(entry.getKey()));
         }
         binding.tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                loadArticles((String)tab.getTag());
+                loadArticles((String) tab.getTag());
                 binding.newsRv.setVisibility(View.VISIBLE);
                 gridLayoutManager.scrollToPosition(0);
             }
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NewsAdapter.NewsA
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                loadArticles((String)tab.getTag());
+                loadArticles((String) tab.getTag());
                 binding.newsRv.setVisibility(View.VISIBLE);
                 gridLayoutManager.scrollToPosition(0);
             }
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements NewsAdapter.NewsA
         newsAdapter.setNewsData(articleList);
     }
 
-    private void loadArticles(String sourceId){
+    private void loadArticles(String sourceId) {
         setArticleList(null);
         binding.progressHorizontal.setVisibility(View.VISIBLE);
         mainActivityViewModel.getTopNewsBySource(sourceId).observe(MainActivity.this, new Observer<APIResponse>() {
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements NewsAdapter.NewsA
             public void onChanged(APIResponse apiResponse) {
                 binding.progressHorizontal.setVisibility(View.INVISIBLE);
                 binding.shimmer.setVisibility(View.INVISIBLE);
-                if(apiResponse!=null) {
+                if (apiResponse != null) {
                     setArticleList(apiResponse.getArticles());
                     binding.emptyText.setVisibility(View.INVISIBLE);
                     binding.emptyView.setVisibility(View.INVISIBLE);
@@ -106,8 +107,8 @@ public class MainActivity extends AppCompatActivity implements NewsAdapter.NewsA
                     Toast.makeText(MainActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
                     binding.emptyText.setVisibility(View.VISIBLE);
                     binding.emptyView.setVisibility(View.VISIBLE);
-                    if(!Utility.isOnline()){
-                        binding.emptyText.setText("No Internet");
+                    if (!Utility.isOnline()) {
+                        binding.emptyText.setText(getResources().getString(R.string.no_internet));
                     }
                 }
                 newsAdapter.setNewsData(articleList);
@@ -119,15 +120,15 @@ public class MainActivity extends AppCompatActivity implements NewsAdapter.NewsA
     protected void onResume() {
         super.onResume();
         checkStatus();
-        Timber.e("Item Count"+newsAdapter.getItemCount());
+        Timber.e("Item Count" + newsAdapter.getItemCount());
     }
 
-    private void checkStatus(){
-        if(newsAdapter.getItemCount()==0){
+    private void checkStatus() {
+        if (newsAdapter.getItemCount() == 0) {
             binding.emptyText.setVisibility(View.VISIBLE);
             binding.emptyView.setVisibility(View.VISIBLE);
-            if(!Utility.isOnline()){
-                binding.emptyText.setText("No Internet");
+            if (!Utility.isOnline()) {
+                binding.emptyText.setText(getResources().getString(R.string.no_internet));
             }
         } else {
             binding.emptyText.setVisibility(View.INVISIBLE);
@@ -144,13 +145,13 @@ public class MainActivity extends AppCompatActivity implements NewsAdapter.NewsA
         return articleList;
     }
 
+    public void setArticleList(List<Article> articleList) {
+        this.articleList = articleList;
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
-    }
-
-    public void setArticleList(List<Article> articleList) {
-        this.articleList = articleList;
     }
 
     @Override
@@ -162,13 +163,12 @@ public class MainActivity extends AppCompatActivity implements NewsAdapter.NewsA
 
     @Override
     protected void onSaveInstanceState(final Bundle outState) {
-        outState.putInt(Constants.TAB_POSITION,binding.tabLayout.getSelectedTabPosition());
+        outState.putInt(Constants.TAB_POSITION, binding.tabLayout.getSelectedTabPosition());
         outState.putSerializable(Constants.ARTICLE_LIST, (Serializable) articleList);
-        outState.putInt(Constants.ITEM_POSITION ,gridLayoutManager.findFirstCompletelyVisibleItemPosition());
-        Timber.e("Test 1 "+ gridLayoutManager.findFirstCompletelyVisibleItemPosition());
+        outState.putInt(Constants.ITEM_POSITION, gridLayoutManager.findFirstCompletelyVisibleItemPosition());
+        Timber.e("Test 1 " + gridLayoutManager.findFirstCompletelyVisibleItemPosition());
         super.onSaveInstanceState(outState);
     }
-
 
 
     @Override
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements NewsAdapter.NewsA
 
     @Override
     public void onNewsClick(Article article, int position) {
-        if(!isOnline()){
+        if (!isOnline()) {
             Utility.setSnackBar(binding.getRoot(), "No Internet Connection");
         } else {
             Intent i = new Intent(this, NewsDetailActivity.class);

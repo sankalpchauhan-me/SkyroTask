@@ -18,9 +18,10 @@ public class Utility {
     /**
      * In real world scenario user will select news source on first install
      * for now I have fixed the choices
+     *
      * @return
      */
-    public static Map<String, String> prepareHashmap(){
+    public static Map<String, String> prepareHashmap() {
         Map<String, String> hashMap = new LinkedHashMap<>();
         //India
         hashMap.put("The Hindu", "the-hindu");
@@ -61,7 +62,7 @@ public class Utility {
         txtv.setGravity(Gravity.CENTER_HORIZONTAL);
     }
 
-    public static Calendar toCalendar(Date date){
+    public static Calendar toCalendar(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal;

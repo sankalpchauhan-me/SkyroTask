@@ -6,9 +6,9 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class APIResponse implements Serializable
-{
+public class APIResponse implements Serializable {
 
+    private final static long serialVersionUID = 7300787295964096133L;
     @SerializedName("status")
     @Expose
     private String status;
@@ -18,7 +18,6 @@ public class APIResponse implements Serializable
     @SerializedName("articles")
     @Expose
     private List<Article> articles = null;
-    private final static long serialVersionUID = 7300787295964096133L;
 
     public String getStatus() {
         return status;

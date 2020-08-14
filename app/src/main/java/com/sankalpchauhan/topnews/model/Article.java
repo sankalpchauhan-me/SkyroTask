@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Article implements Serializable
-{
+public class Article implements Serializable {
 
+    private final static long serialVersionUID = 5425411563592935846L;
     @SerializedName("source")
     @Expose
     private ArticleSource source;
@@ -32,7 +32,6 @@ public class Article implements Serializable
     @SerializedName("content")
     @Expose
     private String content;
-    private final static long serialVersionUID = 5425411563592935846L;
 
     public ArticleSource getSource() {
         return source;

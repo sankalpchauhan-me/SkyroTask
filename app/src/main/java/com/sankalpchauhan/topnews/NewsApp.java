@@ -11,19 +11,19 @@ import timber.log.Timber;
 public class NewsApp extends Application {
     private static NewsApp instance;
 
+    public static Context getAppContext() {
+        return instance;
+    }
+
     @Override
     public void onCreate() {
         instance = this;
         super.onCreate();
-        if(BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
             Stetho.initializeWithDefaults(this);
         }
         DefaultPrefSettings.init(this);
-    }
-
-    public static Context getAppContext() {
-        return instance;
     }
 
 
