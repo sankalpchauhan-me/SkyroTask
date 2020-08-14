@@ -1,15 +1,19 @@
 package com.sankalpchauhan.topnews.view.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
+import com.sankalpchauhan.topnews.R;
 import com.sankalpchauhan.topnews.databinding.ActivityMainBinding;
 import com.sankalpchauhan.topnews.model.APIResponse;
 import com.sankalpchauhan.topnews.model.Article;
+import com.sankalpchauhan.topnews.view.fragments.NewsFragment;
 import com.sankalpchauhan.topnews.viewmodel.MainActivityViewModel;
 
 import java.util.List;
@@ -33,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         userSelectednewsSources = prepareHashmap();
         for(Map.Entry<String, String> entry: userSelectednewsSources.entrySet()){
             binding.tabLayout.addTab(binding.tabLayout.newTab().setTag(entry.getValue()).setText(entry.getKey()));
-
         }
         binding.tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
@@ -43,7 +46,12 @@ public class MainActivity extends AppCompatActivity {
                 mainActivityViewModel.getTopNewsBySource((String)tab.getTag()).observe(MainActivity.this, new Observer<APIResponse>() {
                     @Override
                     public void onChanged(APIResponse apiResponse) {
-
+                        if(apiResponse!=null) {
+                            setArticleList(apiResponse.getArticles());
+                            loadFragment(new NewsFragment());
+                        } else {
+                            Toast.makeText(MainActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             }
@@ -72,6 +80,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void setArticleList(List<Article> articleList) {
         this.articleList = articleList;
+    }
+
+    public boolean loadFragment(Fragment fragment) {
+        //switching fragment
+        if (fragment != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment, fragment)
+                    .commit();
+            return true;
+        }
+        return false;
     }
 
 

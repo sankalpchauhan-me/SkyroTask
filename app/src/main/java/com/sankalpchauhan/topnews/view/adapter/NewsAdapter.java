@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sankalpchauhan.topnews.databinding.NewsItemBinding;
 import com.sankalpchauhan.topnews.model.Article;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     @Override
     public void onBindViewHolder(@NonNull NewsAdapter.NewsHolder holder, int position) {
         Article article = articleList.get(position);
+        holder.title.setText(article.getTitle());
+        holder.subTitle.setText(article.getDescription());
+        Picasso.get().load(article.getUrlToImage()).into(holder.thumbnail);
 
     }
 
