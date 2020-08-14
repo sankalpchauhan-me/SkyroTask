@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 loadArticles((String)tab.getTag());
+                binding.fragment.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 loadArticles((String)tab.getTag());
+                binding.fragment.setVisibility(View.VISIBLE);
             }
         });
 
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(APIResponse apiResponse) {
                 binding.progressHorizontal.setVisibility(View.INVISIBLE);
+                binding.shimmer.setVisibility(View.INVISIBLE);
                 if(apiResponse!=null) {
                     setArticleList(apiResponse.getArticles());
                 } else {

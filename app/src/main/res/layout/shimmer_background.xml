@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:elevation="4dp"
-    app:cardBackgroundColor="@color/background"
     app:cardCornerRadius="4dp"
     android:layout_margin="4dp">
     <LinearLayout
@@ -19,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
+            android:background="@color/background"
             />
         <TextView
             android:id="@+id/title"
@@ -28,33 +28,31 @@
             style="@style/TextAppearance.MaterialComponents.Headline5"
             android:textColor="@color/black"
             tools:text="This is some title"
+            android:background="@color/background"
             />
         <TextView
             android:layout_marginTop="8dp"
             android:layout_marginBottom="12dp"
             android:id="@+id/subtitle"
+            android:text="@string/this_is_a_placeholder"
+            android:textColor="@color/background"
             style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:textStyle="bold"
-            android:layout_height="wrap_content"
-            tools:text="This show was very good"/>
-        
+            android:background="@color/background"
+            android:layout_height="wrap_content" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:background="@color/background"
             >
             <TextView
+                android:text="@string/this_is_a_placeholder"
+                android:textColor="@color/background"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Time"
-                />
-            <TextView
-                android:id="@+id/timeTV"
-                android:layout_marginStart="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="10:22"
                 />
         </LinearLayout>
 
@@ -62,18 +60,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:background="@color/background"
             >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date"
-                />
-            <TextView
-                android:id="@+id/dateTV"
-                android:layout_marginStart="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="16/07/20"
+                android:text="@string/this_is_a_placeholder"
+                android:textColor="@color/background"
                 />
         </LinearLayout>
     </LinearLayout>

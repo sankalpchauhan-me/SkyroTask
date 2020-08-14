@@ -31,8 +31,28 @@
         android:indeterminate="true"
         />
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:layout_marginTop="?actionBarSize"
+        android:id="@+id/shimmer"
+        app:shimmer_auto_start="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout"
+        app:shimmer_duration="800"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <include layout="@layout/shimmer_background" />
+            <include layout="@layout/shimmer_background" />
+            <include layout="@layout/shimmer_background" />
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
 
     <FrameLayout
+        android:visibility="invisible"
         android:layout_marginTop="?actionBarSize"
         android:id="@+id/fragment"
         android:layout_width="match_parent"
