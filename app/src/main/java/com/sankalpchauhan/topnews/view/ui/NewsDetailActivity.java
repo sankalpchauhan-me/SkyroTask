@@ -35,11 +35,14 @@ public class NewsDetailActivity extends AppCompatActivity {
             this.finish();
         }
         super.onCreate(savedInstanceState);
-        if(getSupportActionBar()!=null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
         binding = ActivityNewsDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar);
+
+        if(getSupportActionBar()!=null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Article");
+        }
         binding.mWebview.getSettings().setJavaScriptEnabled(true);
         WebSettings settings = binding.mWebview.getSettings();
         settings.setDomStorageEnabled(true);

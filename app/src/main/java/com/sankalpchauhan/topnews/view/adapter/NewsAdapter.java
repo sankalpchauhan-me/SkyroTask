@@ -16,8 +16,14 @@ import com.sankalpchauhan.topnews.model.Article;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import static com.sankalpchauhan.topnews.util.Utility.toCalendar;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     final NewsAdapterClickListener newsAdapterClickListener;
@@ -38,8 +44,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     @Override
     public void onBindViewHolder(@NonNull NewsAdapter.NewsHolder holder, int position) {
         Article article = articleList.get(position);
-        holder.title.setText(article.getTitle());
-        holder.subTitle.setText(article.getDescription());
+        if(article.getTitle()!=null) {
+            holder.title.setText(article.getTitle());
+        }
+        if(article.getDescription()!=null) {
+            holder.subTitle.setText(article.getDescription());
+        }
         Picasso.get().load(article.getUrlToImage()).error(R.drawable.ic_broken_image_black_24dp).into(holder.thumbnail, new Callback() {
             @Override
             public void onSuccess() {
@@ -51,6 +61,24 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                 holder.progressBar.setVisibility(View.INVISIBLE);
             }
         });
+        if(article.getPublishedAt()!=null) {
+            String dtStart = article.getPublishedAt();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            try {
+                Date date = format.parse(dtStart);
+                Calendar cal = toCalendar(date);
+                holder.date.setText(String.format("%d/%d/%d", cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH), cal.get(Calendar.YEAR)));
+                String ampm;
+                if(cal.get(Calendar.AM_PM)==Calendar.AM){
+                    ampm = "AM";
+                } else {
+                    ampm = "PM";
+                }
+                holder.time.setText(String.format("%d:%d %s", cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE), ampm));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 

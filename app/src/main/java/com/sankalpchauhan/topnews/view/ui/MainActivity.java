@@ -2,7 +2,6 @@ package com.sankalpchauhan.topnews.view.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -11,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
@@ -24,7 +21,6 @@ import com.sankalpchauhan.topnews.model.APIResponse;
 import com.sankalpchauhan.topnews.model.Article;
 import com.sankalpchauhan.topnews.util.Utility;
 import com.sankalpchauhan.topnews.view.adapter.NewsAdapter;
-import com.sankalpchauhan.topnews.view.fragments.NewsFragment;
 import com.sankalpchauhan.topnews.viewmodel.MainActivityViewModel;
 
 import java.io.Serializable;
@@ -44,15 +40,13 @@ public class MainActivity extends AppCompatActivity implements NewsAdapter.NewsA
     public MainActivityViewModel mainActivityViewModel;
     private GridLayoutManager gridLayoutManager;
     private NewsAdapter newsAdapter;
-    int lastFirstVisiblePosition;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState!=null){
-            lastFirstVisiblePosition = savedInstanceState.getInt(Constants.ITEM_POSITION);
-        }
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar);
+        binding.toolbar.setTitle("Top News");
         initViewModel();
         userSelectednewsSources = prepareHashmap();
         for(Map.Entry<String, String> entry: userSelectednewsSources.entrySet()){
@@ -88,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements NewsAdapter.NewsA
 
     private void setUpRecyclerView(List<Article> articleList) {
         final int columns = getResources().getInteger(R.integer.gallery_columns);
-        //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(binding.getRoot().getContext(), LinearLayoutManager.VERTICAL, false);
         gridLayoutManager = new GridLayoutManager(binding.getRoot().getContext(), columns, RecyclerView.VERTICAL, false);
         binding.newsRv.setLayoutManager(gridLayoutManager);
         binding.newsRv.setHasFixedSize(true);
@@ -107,15 +100,16 @@ public class MainActivity extends AppCompatActivity implements NewsAdapter.NewsA
                 binding.shimmer.setVisibility(View.INVISIBLE);
                 if(apiResponse!=null) {
                     setArticleList(apiResponse.getArticles());
-                    checkStatus();
+                    binding.emptyText.setVisibility(View.INVISIBLE);
+                    binding.emptyView.setVisibility(View.INVISIBLE);
                 } else {
                     Toast.makeText(MainActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
-                    checkStatus();
+                    binding.emptyText.setVisibility(View.VISIBLE);
+                    binding.emptyView.setVisibility(View.VISIBLE);
                     if(!Utility.isOnline()){
                         binding.emptyText.setText("No Internet");
                     }
                 }
-                gridLayoutManager.scrollToPosition(lastFirstVisiblePosition);
                 newsAdapter.setNewsData(articleList);
             }
         });
@@ -125,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements NewsAdapter.NewsA
     protected void onResume() {
         super.onResume();
         checkStatus();
+        Timber.e("Item Count"+newsAdapter.getItemCount());
     }
 
     private void checkStatus(){
@@ -162,7 +157,6 @@ public class MainActivity extends AppCompatActivity implements NewsAdapter.NewsA
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         final int columns = getResources().getInteger(R.integer.gallery_columns);
         gridLayoutManager.setSpanCount(columns);
-//        toolbar.animate().translationY(-toolbar.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
         super.onConfigurationChanged(newConfig);
     }
 
@@ -182,8 +176,6 @@ public class MainActivity extends AppCompatActivity implements NewsAdapter.NewsA
         super.onRestoreInstanceState(savedInstanceState);
         binding.tabLayout.selectTab(binding.tabLayout.getTabAt(savedInstanceState.getInt(Constants.TAB_POSITION)));
         binding.tabLayout.getTabAt(savedInstanceState.getInt(Constants.TAB_POSITION)).select();
-        lastFirstVisiblePosition = savedInstanceState.getInt(Constants.ITEM_POSITION);
-        Timber.e("Test 2 "+ lastFirstVisiblePosition);
 
     }
 
