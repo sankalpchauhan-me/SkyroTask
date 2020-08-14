@@ -8,7 +8,9 @@
 - Minimal 3rd party libraries
 
 ## Apk
-[Apk](/assets/topnews-debug.apk)
+[Apk Direct Download](https://github.com/sankalpchauhan-me/SkyroTask/raw/master/assets/topnews-debug.apk)
+
+[File Link](/assets/topnews-debug.apk)
 
 ## Gif
 <p align="center">
